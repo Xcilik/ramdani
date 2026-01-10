@@ -1,86 +1,66 @@
-<header class="bg-white shadow-sm sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4">
-        <div class="flex items-center justify-between h-16">
+<header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <div class="bg-gray-100 py-1.5 px-4 text-center">
+        <p class="text-[11px] tracking-widest uppercase font-medium text-gray-600">
+            Gratis Ongkir Minimal Belanja Rp 699.000
+        </p>
+    </div>
 
-
-            {{-- Logo --}}
-            <a href="{{ route('home') }}" class="flex items-center gap-2">
-                <span class="text-xl font-bold text-indigo-600">
-                    E-Commerce
-                </span>
-            </a>
-
-
-            {{-- Navigation (Desktop) --}}
-            <nav class="hidden md:flex items-center gap-6">
-                <a href="{{ route('home') }}"
-                   class="text-gray-700 hover:text-indigo-600 font-medium transition">
-                    Home
-                </a>
-            </nav>
-
-
-            {{-- Right Section --}}
-            <div class="flex items-center gap-4">
-
-
-                {{-- Cart --}}
-                <a href="{{ route('cart.index') }}"
-                   class="relative text-gray-700 hover:text-indigo-600 transition">
-
-
-                    {{-- Icon --}}
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="h-6 w-6"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.293 2.293A1 1 0 007.618 17H17m0 0a2 2 0 100 4 2 2 0 000-4zm-10 2a2 2 0 100 4 2 2 0 000-4z" />
-                    </svg>
-
-
-                    {{-- Badge --}}
-                    @php
-                        $cartCount = session('cart')
-                            ? collect(session('cart'))->sum('qty')
-                            : 0;
-                    @endphp
-
-
-                    @if ($cartCount > 0)
-                        <span
-                            class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-semibold w-5 h-5 rounded-full flex items-center justify-center">
-                            {{ $cartCount }}
-                        </span>
-                    @endif
+    <div class="max-w-7xl mx-auto px-4 md:px-6">
+        <div class="flex items-center justify-between h-20">
+            
+            <div class="flex items-center gap-8">
+                <a href="{{ route('home') }}" class="flex-shrink-0">
+                    <span class="text-2xl font-black tracking-tighter bg-red-600 text-white px-2 py-1">
+                        LARA<span class="font-light">CLO</span>
+                    </span>
                 </a>
 
+                <nav class="hidden lg:flex items-center gap-8">
+                    <a href="#" class="text-sm font-bold uppercase tracking-wider hover:text-red-600 transition">Pria</a>
+                    <a href="#" class="text-sm font-bold uppercase tracking-wider hover:text-red-600 transition">Wanita</a>
+                    <a href="#" class="text-sm font-bold uppercase tracking-wider hover:text-red-600 transition">Anak</a>
+                    <a href="#" class="text-sm font-bold uppercase tracking-wider text-red-600 transition">Sale</a>
+                </nav>
+            </div>
 
-                {{-- Mobile Menu Button --}}
-                <button class="md:hidden text-gray-700 focus:outline-none"
-                        onclick="document.getElementById('mobileMenu').classList.toggle('hidden')">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="h-6 w-6"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
+            <div class="flex items-center gap-5">
+                <div class="hidden md:flex items-center bg-gray-100 px-3 py-2 rounded-sm border border-transparent focus-within:border-gray-400">
+                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <input type="text" placeholder="Cari Produk..." class="bg-transparent border-none text-xs focus:ring-0 w-48 placeholder-gray-500">
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <a href="{{ route('login') }}" class="text-gray-700 hover:text-red-600 transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    </a>
+                    
+                    <a href="{{ route('cart.index') }}" class="relative text-gray-700 hover:text-red-600 transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                        @php
+                            $cartCount = session('cart') ? collect(session('cart'))->sum('qty') : 0;
+                        @endphp
+                        @if ($cartCount > 0)
+                            <span class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                                {{ $cartCount }}
+                            </span>
+                        @endif
+                    </a>
+
+                    <button class="lg:hidden text-gray-700" onclick="document.getElementById('mobileMenu').classList.toggle('hidden')">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    </button>
+                </div>
             </div>
         </div>
+    </div>
 
-
-        {{-- Mobile Menu --}}
-        <div id="mobileMenu" class="hidden md:hidden pb-4">
-            <a href="{{ route('home') }}"
-               class="block py-2 text-gray-700 hover:text-indigo-600">
-                Home
-            </a>
+    <div id="mobileMenu" class="hidden lg:hidden bg-white border-t border-gray-100">
+        <div class="px-4 py-6 space-y-4">
+            <a href="#" class="block text-base font-bold uppercase">Pria</a>
+            <a href="#" class="block text-base font-bold uppercase">Wanita</a>
+            <a href="#" class="block text-base font-bold uppercase border-b pb-2">Anak</a>
+            <a href="#" class="block text-sm text-gray-600">Bantuan</a>
+            <a href="#" class="block text-sm text-gray-600">Lokasi Toko</a>
         </div>
     </div>
 </header>
-
-
