@@ -1,8 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-
+<link rel="stylesheet" href="https://unpkg.com/swiper@11/swiper-bundle.min.css" />
 <div class="max-w-7xl mx-auto px-4 md:px-6 py-6">
 
     {{-- ================= HERO SLIDER ================= --}}
@@ -106,7 +105,7 @@
     @endif
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     new Swiper('.heroSwiper', {
