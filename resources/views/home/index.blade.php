@@ -5,48 +5,32 @@
 
     <div class="max-w-7xl mx-auto px-4 md:px-6 py-6">
 
-        {{-- ================= HERO SLIDER (UNIQLO STYLE) ================= --}}
+        {{-- ================= HERO SLIDER ================= --}}
         <div class="swiper heroSwiper mb-12 group relative">
             <div class="swiper-wrapper">
-
                 <div class="swiper-slide">
                     <div class="relative aspect-[16/9] md:aspect-[20/8] bg-gray-200">
-                        <img src="{{ asset('assets/images/slider/slider-1.png') }}" class="w-full h-full object-cover"
-                            alt="Koleksi Pria">
+                        <img src="{{ asset('assets/images/slider/slider-1.png') }}" class="w-full h-full object-cover" alt="Koleksi Pria">
                     </div>
                 </div>
-
                 <div class="swiper-slide">
                     <div class="relative aspect-[16/9] md:aspect-[20/8] bg-gray-200">
-                        <img src="{{ asset('assets/images/slider/slider-2.png') }}" class="w-full h-full object-cover"
-                            alt="Koleksi Wanita">
-                        <div class="absolute inset-0 bg-black/10 flex items-center justify-end p-8 md:p-16">
-                        </div>
+                        <img src="{{ asset('assets/images/slider/slider-2.png') }}" class="w-full h-full object-cover" alt="Koleksi Wanita">
+                        <div class="absolute inset-0 bg-black/10 flex items-center justify-end p-8 md:p-16"></div>
                     </div>
                 </div>
-
                 <div class="swiper-slide">
                     <div class="relative aspect-[16/9] md:aspect-[20/8] bg-gray-200">
-                        <img src="{{ asset('assets/images/slider/slider-3.png') }}" class="w-full h-full object-cover"
-                            alt="Koleksi Pria">
-                        <div class="absolute inset-0 bg-black/10 flex items-center p-8 md:p-16">
-                        </div>
+                        <img src="{{ asset('assets/images/slider/slider-3.png') }}" class="w-full h-full object-cover" alt="Koleksi Pria">
+                        <div class="absolute inset-0 bg-black/10 flex items-center p-8 md:p-16"></div>
                     </div>
                 </div>
-
             </div>
 
-            <div
-                class="swiper-button-next !text-black !w-12 !h-12 bg-white/80 opacity-0 group-hover:opacity-100 transition after:!text-lg">
-            </div>
-            <div
-                class="swiper-button-prev !text-black !w-12 !h-12 bg-white/80 opacity-0 group-hover:opacity-100 transition after:!text-lg">
-            </div>
-
+            <div class="swiper-button-next !text-black !w-12 !h-12 bg-white/80 opacity-0 group-hover:opacity-100 transition after:!text-lg"></div>
+            <div class="swiper-button-prev !text-black !w-12 !h-12 bg-white/80 opacity-0 group-hover:opacity-100 transition after:!text-lg"></div>
             <div class="swiper-pagination !-bottom-2"></div>
         </div>
-
-
 
         {{-- ================= TITLE & FILTER ================= --}}
         <div class="border-b border-gray-200 pb-6 mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -62,22 +46,18 @@
             </div>
 
             <form method="GET" class="w-full md:w-64">
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Filter
-                    Kategori</label>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Filter Kategori</label>
                 <div class="relative">
-                    <select name="category" onchange="this.form.submit()"
-                        class="w-full border-gray-300 rounded-none text-sm font-medium py-2.5 pl-4 pr-10 appearance-none focus:border-black focus:ring-0 transition">
+                    <select name="category" onchange="this.form.submit()" class="w-full border-gray-300 rounded-none text-sm font-medium py-2.5 pl-4 pr-10 appearance-none focus:border-black focus:ring-0 transition">
                         <option value="">Semua Kategori</option>
                         @foreach ($categories as $category)
-                            <option value="{{ $category->slug }}"
-                                {{ request('category') == $category->slug ? 'selected' : '' }}>
+                            <option value="{{ $category->slug }}" {{ request('category') == $category->slug ? 'selected' : '' }}>
                                 {{ strtoupper($category->name) }}
                             </option>
                         @endforeach
                     </select>
                     <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                        <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor font-bold">
+                        <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor font-bold">
                             <path d="M19 9l-7 7-7-7" stroke-width="2" />
                         </svg>
                     </div>
@@ -97,8 +77,7 @@
                                     class="w-full h-full object-cover object-center group-hover:scale-105 transition duration-700 ease-in-out">
 
                                 @if ($loop->first)
-                                    <div
-                                        class="absolute top-0 left-0 bg-red-600 text-white text-[10px] font-bold px-3 py-1.5 uppercase tracking-tighter">
+                                    <div class="absolute top-0 left-0 bg-red-600 text-white text-[10px] font-bold px-3 py-1.5 uppercase tracking-tighter">
                                         New Arrival
                                     </div>
                                 @endif
@@ -108,8 +87,7 @@
                                 <p class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em]">
                                     {{ $product->category->name }}
                                 </p>
-                                <h3
-                                    class="text-sm font-bold text-gray-900 line-clamp-2 leading-snug group-hover:underline decoration-1 underline-offset-4">
+                                <h3 class="text-sm font-bold text-gray-900 line-clamp-2 leading-snug group-hover:underline decoration-1 underline-offset-4">
                                     {{ $product->name }}
                                 </h3>
                                 <div class="pt-2">
@@ -134,28 +112,21 @@
         @endif
     </div>
 
+    {{-- ================= SWIPER JS ================= --}}
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
     <script>
-        const swiper = new Swiper('.heroSwiper', {
-            loop: true,
-            autoplay: {
-                delay: 5000,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
+        document.addEventListener('DOMContentLoaded', () => {
+            new Swiper('.heroSwiper', {
+                loop: true,
+                autoplay: { delay: 5000, disableOnInteraction: false },
+                pagination: { el: '.swiper-pagination', clickable: true },
+                navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+            });
         });
     </script>
 
     <style>
-        /* Custom Pagination Style Uniqlo */
+        /* Custom Pagination Style */
         .swiper-pagination-bullet {
             width: 12px;
             height: 2px;
@@ -169,14 +140,8 @@
             width: 30px;
         }
 
-        /* Clean Pagination Laravel */
-        .pagination svg {
-            width: 20px;
-            display: inline;
-        }
-
-        .pagination nav {
-            @apply flex items-center gap-1;
-        }
+        /* Laravel Pagination */
+        .pagination svg { width: 20px; display: inline; }
+        .pagination nav { @apply flex items-center gap-1; }
     </style>
 @endsection
