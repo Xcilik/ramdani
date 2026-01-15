@@ -3,190 +3,189 @@
 @section('title', $product->name)
 
 @section('content')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-
-    <div class="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-12">
-        {{-- BREADCRUMB --}}
-        <nav class="flex text-[10px] text-gray-400 uppercase tracking-widest mb-8" aria-label="Breadcrumb">
+    <div class="max-w-[1440px] mx-auto px-4 md:px-10 py-6 md:py-10 relative">
+        
+        {{-- Breadcrumb Minimalis --}}
+        <nav class="flex text-[11px] font-medium text-gray-500 mb-6 md:mb-0" aria-label="Breadcrumb">
             <a href="/" class="hover:text-black transition">Home</a>
             <span class="mx-2">/</span>
-            <a href="{{ route('home', ['category' => $product->category->slug]) }}"
-                class="hover:text-black transition">{{ $product->category->name }}</a>
+            <a href="{{ route('home', ['category' => $product->category->slug]) }}" class="hover:text-black transition">{{ $product->category->name }}</a>
             <span class="mx-2">/</span>
-            <span class="text-black font-bold">{{ $product->name }}</span>
+            <span class="text-black">{{ $product->name }}</span>
         </nav>
 
-        <div class="flex flex-col lg:flex-row gap-12">
-
-            {{-- ================= LEFT: GALLERY SLIDER ================= --}}
-            <div class="lg:w-7/12">
-                <div class="sticky top-10">
-                    <div class="swiper productMainSwiper aspect-[3/4] bg-gray-100 overflow-hidden mb-4">
-                        <div class="swiper-wrapper">
-                            @foreach ($product->images as $image)
-                                <div class="swiper-slide">
-                                    <img src="{{ asset('storage/' . $image->image) }}"
-                                        class="w-full h-full object-cover object-center" alt="{{ $product->name }}">
-                                </div>
-                            @endforeach
+        <div class="lg:flex lg:gap-12 items-start mt-4">
+            
+            {{-- ================= KIRI: GALERI FOTO (Niken STYLE) ================= --}}
+            {{-- Desktop: Grid 2 Kolom | Mobile: Horizontal Scroll --}}
+            <div class="w-full lg:w-[65%] mb-8 lg:mb-0">
+                
+                {{-- Mobile View (Scroll Samping) --}}
+                <div class="flex overflow-x-auto gap-2 lg:hidden snap-x snap-mandatory scrollbar-hide pb-4">
+                    @foreach ($product->images as $image)
+                        <div class="flex-shrink-0 w-[90%] snap-center bg-[#f5f5f5]">
+                            <img src="{{ asset('storage/' . $image->image) }}" 
+                                 class="w-full h-auto object-cover mix-blend-multiply" 
+                                 alt="{{ $product->name }}">
                         </div>
-                        <div class="swiper-button-next !text-black bg-white/80 w-10 h-10 !after:text-sm"></div>
-                        <div class="swiper-button-prev !text-black bg-white/80 w-10 h-10 !after:text-sm"></div>
-                    </div>
+                    @endforeach
+                </div>
 
-                    <div class="swiper productThumbSwiper">
-                        <div class="swiper-wrapper">
-                            @foreach ($product->images as $image)
-                                <div
-                                    class="swiper-slide cursor-pointer border-2 border-transparent opacity-60 transition duration-300">
-                                    <img src="{{ asset('storage/' . $image->image) }}" class="aspect-[3/4] object-cover"
-                                        alt="Thumbnail">
-                                </div>
-                            @endforeach
+                {{-- Desktop View (Grid) --}}
+                <div class="hidden lg:grid grid-cols-2 gap-3">
+                    @foreach ($product->images as $image)
+                        <div class="bg-[#f5f5f5] w-full relative">
+                            <img src="{{ asset('storage/' . $image->image) }}" 
+                                 class="w-full h-auto object-cover mix-blend-multiply transition hover:scale-[1.02] duration-500" 
+                                 alt="{{ $product->name }}">
                         </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
 
-            {{-- ================= RIGHT: PRODUCT INFO ================= --}}
-            <div class="lg:w-5/12">
-                <div class="space-y-6">
-                    <div>
-                        <h1 class="text-2xl md:text-3xl font-black uppercase tracking-tighter text-gray-900 leading-tight">
-                            {{ $product->name }}
-                        </h1>
-                        <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mt-2">
-                            {{ $product->category->name }}
+            {{-- ================= KANAN: INFO PRODUK (STICKY) ================= --}}
+            <div class="w-full lg:w-[35%] sticky top-24">
+                
+                <div class="pr-2">
+                    <h1 class="text-2xl md:text-3xl font-medium tracking-tight mb-1 text-black">
+                        {{ $product->name }}
+                    </h1>
+                    <p class="text-base font-medium text-gray-500 mb-4">
+                        {{ $product->category->name }}
+                    </p>
+                    
+                    <div class="mb-6">
+                        <p class="text-lg font-medium text-gray-900" id="display_price">
+                            Rp {{ number_format($product->variants->min('price'), 0, ',', '.') }}
                         </p>
                     </div>
 
-                    <div class="border-y border-gray-100 py-6">
-                        <p class="text-[11px] font-bold text-gray-400 uppercase tracking-tighter mb-1">Harga Spesial</p>
-                        <h2 id="display_price" class="text-3xl font-black text-gray-900 tracking-tighter italic">
-                            Rp {{ number_format($product->variants->min('price'), 0, ',', '.') }}
-                        </h2>
-                    </div>
-
-                    <p class="text-sm text-gray-600 leading-relaxed font-medium">
-                        {{ $product->description }}
-                    </p>
-
-                    {{-- FORM ADD TO CART --}}
-                    <form action="{{ route('cart.add') }}" method="POST" class="space-y-8">
+                    {{-- FORM START --}}
+                    <form action="{{ route('cart.add') }}" method="POST" id="addToCartForm">
                         @csrf
+                        {{-- Data Hidden untuk Controller --}}
                         <input type="hidden" name="product_name" value="{{ $product->name }}">
-                        <input type="hidden" id="selected_price" name="price"
-                            value="{{ $product->variants->min('price') }}">
+                        <input type="hidden" name="qty" value="1"> {{-- Default Qty 1 (Niken Style biasanya handle qty di cart) --}}
+                        <input type="hidden" name="variant_id" id="selectedVariantId" required>
+                        <input type="hidden" name="price" id="selectedPriceInput" value="{{ $product->variants->min('price') }}">
 
-                        {{-- VARIANT SELECTOR (Uniqlo Style Grid) --}}
-                        <div>
-                            <div class="flex justify-between items-center mb-4">
-                                <label class="text-xs font-black uppercase tracking-widest">Pilih Ukuran/Warna</label>
-                                <a href="#"
-                                    class="text-[10px] font-bold text-gray-400 underline uppercase tracking-tighter">Size
-                                    Chart</a>
+                        {{-- Size Selector --}}
+                        <div class="mb-8">
+                            <div class="flex justify-between items-center mb-3">
+                                <label class="text-base font-medium">Pilih Ukuran</label>
+                                <a href="#" class="text-base font-medium text-gray-400 hover:text-black transition">Panduan Ukuran</a>
                             </div>
 
-                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            <div class="grid grid-cols-3 gap-2">
                                 @foreach ($product->variants as $variant)
-                                    <label
-                                        class="relative group cursor-pointer {{ $variant->stock == 0 ? 'opacity-40 cursor-not-allowed' : '' }}">
-                                        <input type="radio" name="variant_id" value="{{ $variant->id }}"
-                                            data-price="{{ $variant->price }}" onchange="updatePrice(this)"
-                                            class="peer sr-only" {{ $variant->stock == 0 ? 'disabled' : 'required' }}>
-
-                                        <div
-                                            class="border border-gray-200 py-3 px-2 text-center transition group-hover:border-black peer-checked:border-black peer-checked:bg-black peer-checked:text-white">
-                                            <p class="text-[11px] font-bold uppercase tracking-tight">
-                                                {{ $variant->color ?? '' }} {{ $variant->size }}
-                                            </p>
-                                            <p class="text-[9px] mt-0.5 opacity-70">Stok: {{ $variant->stock }}</p>
-                                        </div>
-                                    </label>
+                                    @php $isOutOfStock = $variant->stock <= 0; @endphp
+                                    <div class="relative">
+                                        <input type="radio" 
+                                               name="size_selector" 
+                                               id="variant_{{ $variant->id }}" 
+                                               value="{{ $variant->id }}"
+                                               class="peer sr-only"
+                                               {{ $isOutOfStock ? 'disabled' : '' }}
+                                               onchange="selectSize('{{ $variant->id }}', '{{ $variant->price }}')">
+                                        
+                                        <label for="variant_{{ $variant->id }}" 
+                                               class="flex items-center justify-center w-full py-3 rounded-md border border-gray-200 bg-white text-base hover:border-black cursor-pointer transition
+                                               peer-checked:border-black peer-checked:ring-1 peer-checked:ring-black
+                                               {{ $isOutOfStock ? 'bg-gray-100 text-gray-300 cursor-not-allowed hover:border-gray-200' : 'text-black' }}">
+                                            {{ $variant->size }}
+                                        </label>
+                                    </div>
                                 @endforeach
                             </div>
+                            <p id="sizeError" class="text-red-600 text-sm mt-2 hidden">Silakan pilih ukuran terlebih dahulu.</p>
                         </div>
 
-                        {{-- QUANTITY --}}
-                        <div class="flex items-center gap-4 border-t border-gray-100 pt-8">
-                            <div class="w-32">
-                                <label
-                                    class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 block">Kuantitas</label>
-                                <div class="flex border border-gray-300 h-12">
-                                    <button type="button" onclick="this.nextElementSibling.stepDown()"
-                                        class="flex-1 hover:bg-gray-100 text-lg">−</button>
-                                    <input type="number" name="qty" value="1" min="1"
-                                        class="w-12 text-center border-none focus:ring-0 font-bold text-sm">
-                                    <button type="button" onclick="this.previousElementSibling.stepUp()"
-                                        class="flex-1 hover:bg-gray-100 text-lg">+</button>
-                                </div>
-                            </div>
-
-                            <div class="flex-1 self-end">
-                                <button type="submit"
-                                    class="w-full bg-black text-white h-12 text-sm font-black uppercase tracking-[0.2em] transition hover:bg-gray-800 disabled:bg-gray-300"
-                                    {{ $product->variants->sum('stock') == 0 ? 'disabled' : '' }}>
-                                    {{ $product->variants->sum('stock') == 0 ? 'Habis Terjual' : 'Tambah ke Keranjang' }}
-                                </button>
-                            </div>
+                        {{-- Action Buttons --}}
+                        <div class="space-y-3 mb-8">
+                            <button type="submit" 
+                                    class="w-full bg-black text-white rounded-full py-4 text-base font-medium hover:bg-gray-800 transition duration-200">
+                                Tambahkan ke Keranjang
+                            </button>
+                            
+                            <button type="button" 
+                                    class="w-full bg-white text-black border border-gray-300 rounded-full py-4 text-base font-medium hover:border-black flex items-center justify-center gap-2 transition duration-200">
+                                Favorit <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                            </button>
                         </div>
                     </form>
 
-                    {{-- ADDITIONAL INFO --}}
-                    <div class="pt-8 border-t border-gray-100">
-                        <div class="flex items-center gap-3 text-gray-400">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-width="2" />
-                            </svg>
-                            <span class="text-[10px] font-bold uppercase tracking-widest">Pengiriman Gratis untuk
-                                Member</span>
-                        </div>
+                    {{-- Description --}}
+                    <div class="text-base text-gray-900 leading-relaxed mb-8 pt-6">
+                        <p class="mb-6">{{ $product->description }}</p>
+                        <ul class="list-disc pl-5 space-y-1 text-sm text-gray-700">
+                            <li>Warna: {{ $product->variants->first()->color ?? 'Sesuai Foto' }}</li>
+                            <li>Kategori: {{ $product->category->name }}</li>
+                        </ul>
                     </div>
+
+                    {{-- Accordion Info --}}
+                    <div class="border-t border-gray-200 py-4">
+                        <details class="group cursor-pointer">
+                            <summary class="flex justify-between items-center font-medium list-none text-lg">
+                                <span>Pengiriman & Pengembalian</span>
+                                <span class="transition group-open:rotate-180">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
+                                </span>
+                            </summary>
+                            <div class="text-gray-600 mt-4 text-base group-open:animate-fadeIn">
+                                <p>Gratis ongkir standar untuk pesanan member Niken.</p>
+                            </div>
+                        </details>
+                    </div>
+                    
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        // Initialize Thumbnails
-        var thumbSwiper = new Swiper(".productThumbSwiper", {
-            spaceBetween: 10,
-            slidesPerView: 5,
-            freeMode: true,
-            watchSlidesProgress: true,
-        });
-
-        // Initialize Main Slider
-        var mainSwiper = new Swiper(".productMainSwiper", {
-            spaceBetween: 10,
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
-            thumbs: {
-                swiper: thumbSwiper,
-            },
-        });
-
-        function updatePrice(element) {
-            const price = element.getAttribute('data-price');
-            document.getElementById('selected_price').value = price;
+        // JS Sederhana untuk update input hidden saat ukuran dipilih
+        function selectSize(variantId, price) {
+            // Update Variant ID
+            document.getElementById('selectedVariantId').value = variantId;
+            
+            // Update Price Input
+            document.getElementById('selectedPriceInput').value = price;
+            
+            // Update Display Price (Opsional jika harga beda tiap size)
             document.getElementById('display_price').innerText = 'Rp ' + Number(price).toLocaleString('id-ID');
+
+            // Hide Error
+            document.getElementById('sizeError').classList.add('hidden');
         }
+
+        // Validasi form sebelum submit
+        document.getElementById('addToCartForm').addEventListener('submit', function(e) {
+            const variantId = document.getElementById('selectedVariantId').value;
+            if (!variantId) {
+                e.preventDefault();
+                document.getElementById('sizeError').classList.remove('hidden');
+            }
+        });
     </script>
 
     <style>
-        /* Styling for active thumbnail */
-        .productThumbSwiper .swiper-slide-thumb-active {
-            opacity: 1;
-            border-color: black;
+        /* Hilangkan Scrollbar di Mobile tapi tetap bisa scroll */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
         }
-
-        input[type=number]::-webkit-inner-spin-button,
-        input[type=number]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Animasi Accordion */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.3s ease-out forwards;
         }
     </style>
 @endsection

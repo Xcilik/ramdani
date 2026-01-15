@@ -1,127 +1,121 @@
 @extends('layouts.admin')
 
-@section('title', 'CATEGORY_INDEX_')
+@section('title', 'CATEGORY LIST')
 
 @section('content')
-    <div class="max-w-full">
+    <div class="min-h-screen bg-gray-50/50 pb-20 pt-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {{-- HEADER SECTION --}}
-        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8 border-b-2 border-[#1a1a1a] pb-6">
-            <div>
-                <span class="font-mono text-xs text-gray-400 mb-1 block">TAXONOMY // MASTER_DATA</span>
-                <h1 class="text-3xl font-black uppercase tracking-tighter text-[#1a1a1a]">
-                    Category List
-                </h1>
+            {{-- HEADER SECTION --}}
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs font-semibold text-indigo-600 tracking-wider uppercase">Taxonomy</span>
+                        <span class="px-2 py-0.5 rounded-md bg-gray-100 text-gray-500 text-[10px] font-mono font-bold">{{ $categories->count() }} COLLECTIONS</span>
+                    </div>
+                    <h1 class="text-3xl font-bold text-gray-800 tracking-tight">Category Management</h1>
+                </div>
+
+                <a href="{{ route('admin.categories.create') }}" 
+                   class="group flex items-center gap-2 px-6 py-3 bg-[#111] text-white text-sm font-bold rounded-xl hover:bg-black hover:shadow-lg hover:shadow-gray-200 transition-all transform hover:-translate-y-0.5">
+                    <svg class="w-4 h-4 text-gray-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    <span>New Category</span>
+                </a>
             </div>
 
-            <a href="{{ route('admin.categories.create') }}" 
-               class="group relative inline-flex items-center justify-start px-6 py-3 overflow-hidden font-bold transition-all bg-[#1a1a1a] hover:bg-[#EB0000]">
-                <span class="absolute top-0 right-0 inline-block w-4 h-4 transition-all duration-500 ease-in-out bg-[#333] group-hover:-mr-4 group-hover:-mt-4">
-                    <span class="absolute top-0 right-0 w-5 h-5 rotate-45 translate-x-1/2 -translate-y-1/2 bg-white"></span>
-                </span>
-                <span class="relative w-full text-left text-white transition-colors duration-200 ease-in-out uppercase tracking-widest text-xs">
-                    + New Category
-                </span>
-            </a>
-        </div>
+            {{-- FLASH MESSAGE --}}
+            @if (session('success'))
+                <div class="mb-6 rounded-xl bg-green-50 border border-green-100 p-4 flex items-center gap-3 animate-fade-in-down">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-green-800">Success</p>
+                        <p class="text-xs text-green-600">{{ session('success') }}</p>
+                    </div>
+                </div>
+            @endif
 
-        {{-- FLASH MESSAGE (SYSTEM LOG STYLE) --}}
-        @if (session('success'))
-            <div class="mb-6 border border-[#1a1a1a] bg-gray-50 p-4 flex items-center gap-4 animate-pulse">
-                <div class="w-3 h-3 bg-green-500"></div>
-                <div>
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-gray-500">System Notification</p>
-                    <p class="font-mono text-xs text-[#1a1a1a]">{{ session('success') }}</p>
+            {{-- TABLE CARD --}}
+            <div class="bg-white rounded-2xl shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] border border-gray-100 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-50/50 border-b border-gray-100">
+                                <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-gray-400 w-16 text-center">#</th>
+                                <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-gray-400">Category Name</th>
+                                <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-gray-400">Slug</th>
+                                <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-gray-400 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-50">
+                            @forelse ($categories as $category)
+                                <tr class="group hover:bg-gray-50/80 transition-colors">
+                                    {{-- NO --}}
+                                    <td class="px-6 py-4 text-center">
+                                        <span class="font-mono text-xs text-gray-400">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
+                                    </td>
+
+                                    {{-- NAME --}}
+                                    <td class="px-6 py-4">
+                                        <span class="font-bold text-gray-800 text-sm group-hover:text-indigo-600 transition-colors">
+                                            {{ $category->name }}
+                                        </span>
+                                    </td>
+
+                                    {{-- SLUG --}}
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-gray-100 text-gray-600 font-mono">
+                                            /{{ $category->slug }}
+                                        </span>
+                                    </td>
+
+                                    {{-- ACTIONS --}}
+                                    <td class="px-6 py-4 text-right">
+                                        <div class="flex justify-end items-center gap-2">
+                                            {{-- Edit --}}
+                                            <a href="{{ route('admin.categories.edit', $category) }}" 
+                                               class="p-2 rounded-lg text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 transition-all" title="Edit Category">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                                            </a>
+
+                                            {{-- Delete --}}
+                                            <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button onclick="return confirm('Are you sure you want to delete this category?')" 
+                                                        class="p-2 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-all" title="Delete">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="px-6 py-12 text-center text-gray-400">
+                                        <div class="flex flex-col items-center justify-center">
+                                            <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
+                                                <svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                                            </div>
+                                            <p class="text-sm font-medium text-gray-500">No categories found</p>
+                                            <p class="text-xs text-gray-400 mt-1">Start by adding a new collection.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+                
+                {{-- FOOTER / PAGINATION PLACEHOLDER --}}
+                <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 flex items-center justify-between">
+                    <p class="text-xs text-gray-500">
+                        Total Categories: <span class="font-bold text-gray-800">{{ $categories->count() }}</span>
+                    </p>
                 </div>
             </div>
-        @endif
 
-        {{-- TABLE CONTAINER --}}
-        <div class="border-2 border-[#1a1a1a] bg-white">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    {{-- TABLE HEAD --}}
-                    <thead>
-                        <tr class="border-b-2 border-[#1a1a1a] bg-[#F5F5F5]">
-                            <th class="p-4 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 border-r border-gray-300 w-16 text-center">
-                                No
-                            </th>
-                            <th class="p-4 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 border-r border-gray-300">
-                                Category Name
-                            </th>
-                            <th class="p-4 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 border-r border-gray-300">
-                                Slug / Key
-                            </th>
-                            <th class="p-4 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 text-right">
-                                Actions
-                            </th>
-                        </tr>
-                    </thead>
-
-                    {{-- TABLE BODY --}}
-                    <tbody class="text-sm">
-                        @forelse ($categories as $category)
-                            <tr class="border-b border-gray-200 hover:bg-gray-50 group transition-colors">
-                                
-                                {{-- NO --}}
-                                <td class="p-4 border-r border-gray-100 text-center font-mono text-gray-400">
-                                    {{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}
-                                </td>
-
-                                {{-- NAME --}}
-                                <td class="p-4 border-r border-gray-100">
-                                    <span class="font-bold text-[#1a1a1a] uppercase text-lg group-hover:text-[#EB0000] transition-colors">
-                                        {{ $category->name }}
-                                    </span>
-                                </td>
-
-                                {{-- SLUG --}}
-                                <td class="p-4 border-r border-gray-100">
-                                    <span class="font-mono text-xs bg-gray-100 px-2 py-1 text-gray-600">
-                                        /{{ $category->slug }}
-                                    </span>
-                                </td>
-
-                                {{-- ACTIONS --}}
-                                <td class="p-4 text-right">
-                                    <div class="flex justify-end items-center gap-4">
-                                        <a href="{{ route('admin.categories.edit', $category) }}" 
-                                           class="text-[10px] font-bold uppercase tracking-wider text-gray-400 hover:text-[#1a1a1a] hover:underline decoration-2 underline-offset-4 transition-all">
-                                            Edit
-                                        </a>
-
-                                        <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="inline-block">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button onclick="return confirm('WARNING: Delete this category?')" 
-                                                    class="text-[10px] font-bold uppercase tracking-wider text-[#EB0000] hover:bg-[#EB0000] hover:text-white px-2 py-1 transition-all">
-                                                [ DEL ]
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="4" class="p-8 text-center border-b border-gray-200">
-                                    <div class="flex flex-col items-center justify-center opacity-50">
-                                        <div class="w-12 h-1 bg-[#1a1a1a] mb-2"></div>
-                                        <span class="font-mono text-xs uppercase tracking-widest text-[#1a1a1a]">No Records Found</span>
-                                        <span class="text-[10px] text-gray-400 mt-1">Initialize new category data to begin.</span>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-
-            {{-- FOOTER STATUS --}}
-            <div class="p-4 border-t-2 border-[#1a1a1a] bg-[#F5F5F5] flex justify-between items-center">
-                <span class="font-mono text-[10px] text-gray-400">TOTAL CATEGORIES: {{ $categories->count() }}</span>
-                <div class="w-2 h-2 bg-green-500 animate-pulse" title="System Active"></div>
-            </div>
         </div>
-
     </div>
 @endsection

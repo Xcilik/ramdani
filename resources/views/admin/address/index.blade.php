@@ -1,161 +1,146 @@
-@extends('layouts.app')
+@extends('layouts.admin')
+
+@section('title', 'ADDRESS LIST')
 
 @section('content')
-    {{-- CONTAINER: Menggunakan max-w-7xl dan px-4 md:px-6 agar SEJAJAR dengan Header --}}
-    <div class="max-w-7xl mx-auto px-4 md:px-6 py-10 text-[#1a1a1a] font-sans">
+    <div class="min-h-screen bg-gray-50/50 pb-20 pt-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {{-- GRID LAYOUT: Kiri (Info/Action) - Kanan (Tabel) --}}
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-
-            {{-- KOLOM KIRI: JUDUL, STATS, & TOMBOL TAMBAH (Sticky) --}}
-            <div class="lg:col-span-3">
-                <div class="sticky top-24 border-t-4 border-[#1a1a1a] pt-4">
-                    <span class="font-mono text-xs text-gray-400 block mb-2 uppercase tracking-widest">
-                        Database // List
-                    </span>
-
-                    <h1 class="text-3xl md:text-4xl font-black uppercase tracking-tighter leading-none mb-4">
-                        Manajemen <br>Alamat
-                    </h1>
-
-                    {{-- Stats Badge --}}
-                    <div class="mb-8 inline-block bg-gray-100 border border-gray-200 px-3 py-1">
-                        <p class="font-mono text-[10px] uppercase text-gray-600">
-                            Total Entries: <span class="font-bold text-black">{{ count($addresses) }}</span>
-                        </p>
+            {{-- HEADER SECTION --}}
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs font-semibold text-indigo-600 tracking-wider uppercase">Logistics Database</span>
+                        <span class="px-2 py-0.5 rounded-md bg-gray-100 text-gray-500 text-[10px] font-mono font-bold">{{ count($addresses) }} ENTRIES</span>
                     </div>
-
-                    {{-- Primary Action Button (Moved to Left) --}}
-                    <a href="{{ route('admin.addresses.create') }}"
-                        class="block w-full text-center py-4 bg-[#1a1a1a] text-white text-xs font-bold uppercase tracking-widest hover:bg-[#EB0000] transition-all ring-offset-2 focus:ring-2 ring-black">
-                        + Input Data Baru
-                    </a>
-
-                    <p class="text-[10px] text-gray-400 mt-4 leading-relaxed font-mono">
-                        * Kelola data pengiriman user dari panel ini. Pastikan menghapus data yang duplikat.
-                    </p>
+                    <h1 class="text-3xl font-bold text-gray-800 tracking-tight">Shipping Addresses</h1>
                 </div>
+
+                <a href="{{ route('admin.addresses.create') }}" 
+                   class="group flex items-center gap-2 px-6 py-3 bg-[#111] text-white text-sm font-bold rounded-xl hover:bg-black hover:shadow-lg hover:shadow-gray-200 transition-all transform hover:-translate-y-0.5">
+                    <svg class="w-4 h-4 text-gray-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    <span>Add New Address</span>
+                </a>
             </div>
 
-            {{-- KOLOM KANAN: TABEL DATA --}}
-            <div class="lg:col-span-9">
-
-                {{-- ALERT NOTIFICATION --}}
-                @if (session('success'))
-                    <div class="mb-6 p-4 bg-gray-50 border-l-4 border-[#1a1a1a] flex items-center justify-between">
-                        <div>
-                            <span class="font-mono text-[10px] text-gray-400 block uppercase">System Message</span>
-                            <span class="text-sm font-bold uppercase tracking-wide text-gray-900">
-                                {{ session('success') }}
-                            </span>
-                        </div>
-                        <button onclick="this.parentElement.remove()"
-                            class="text-xs font-bold text-gray-400 hover:text-black">CLOSE</button>
+            {{-- FLASH MESSAGE --}}
+            @if (session('success'))
+                <div class="mb-6 rounded-xl bg-green-50 border border-green-100 p-4 flex items-center gap-3 animate-fade-in-down">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     </div>
-                @endif
+                    <div>
+                        <p class="text-sm font-bold text-green-800">System Notification</p>
+                        <p class="text-xs text-green-600">{{ session('success') }}</p>
+                    </div>
+                    <button onclick="this.parentElement.remove()" class="ml-auto text-green-400 hover:text-green-600">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+            @endif
 
-                {{-- TABLE CONTAINER --}}
-                <div class="border border-gray-200 bg-white">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-
-                            {{-- Table Head --}}
-                            <thead>
-                                <tr class="bg-[#1a1a1a] text-white">
-                                    <th class="p-5 text-[10px] font-mono font-bold uppercase tracking-widest w-1/4">Label /
-                                        Penerima</th>
-                                    <th class="p-5 text-[10px] font-mono font-bold uppercase tracking-widest w-1/5">Kontak
-                                    </th>
-                                    <th class="p-5 text-[10px] font-mono font-bold uppercase tracking-widest w-1/3">Detail
-                                        Lokasi</th>
-                                    <th class="p-5 text-[10px] font-mono font-bold uppercase tracking-widest text-right">
-                                        Opsi</th>
-                                </tr>
-                            </thead>
-
-                            {{-- Table Body --}}
-                            <tbody class="divide-y divide-gray-200">
-                                @forelse($addresses as $address)
-                                    <tr class="group hover:bg-gray-50 transition-colors duration-150">
-
-                                        {{-- Name --}}
-                                        <td class="p-5 align-top">
-                                            <span class="block font-black text-sm uppercase text-[#1a1a1a] mb-1">
-                                                {{ $address->name }}
-                                            </span>
-                                            <span
-                                                class="font-mono text-[10px] text-gray-400 bg-gray-100 px-1 py-0.5 border border-gray-200">
-                                                ID: {{ $address->id }}
-                                            </span>
-                                        </td>
-
-                                        {{-- Phone --}}
-                                        <td class="p-5 align-top">
-                                            <span class="font-mono text-xs text-gray-600 block">
-                                                {{ $address->phone }}
-                                            </span>
-                                        </td>
-
-                                        {{-- Address --}}
-                                        <td class="p-5 align-top">
-                                            <p
-                                                class="text-xs font-medium text-gray-800 leading-relaxed uppercase line-clamp-2">
-                                                {{ $address->address }}
-                                            </p>
-                                            <div class="mt-2 flex gap-2 font-mono text-[10px] text-gray-500 flex-wrap">
-                                                <span>{{ $address->city }}</span>
-                                                <span class="text-gray-300">//</span>
-                                                <span>{{ $address->province }}</span>
-                                            </div>
-                                            <div class="mt-1 font-mono text-[10px] font-bold text-black">
-                                                Postal: {{ $address->postal_code }}
-                                            </div>
-                                        </td>
-
-                                        {{-- Actions --}}
-                                        <td class="p-5 align-top text-right">
-                                            <div class="flex flex-col items-end gap-3">
-                                                <a href="{{ route('admin.addresses.edit', $address->id) }}"
-                                                    class="text-[10px] font-bold uppercase tracking-widest text-black hover:text-blue-600 underline decoration-2 underline-offset-4">
-                                                    Edit
-                                                </a>
-
-                                                <form action="{{ route('admin.addresses.destroy', $address->id) }}"
-                                                    method="POST"
-                                                    onsubmit="return confirm('KONFIRMASI: Hapus data permanen?')">
-                                                    @csrf @method('DELETE')
-                                                    <button type="submit"
-                                                        class="text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-[#EB0000] underline decoration-2 underline-offset-4">
-                                                        Hapus
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="4" class="p-16 text-center bg-gray-50">
-                                            <div
-                                                class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 p-8 max-w-sm mx-auto">
-                                                <span class="font-mono text-xs text-gray-400 mb-2">DATABASE_STATUS:
-                                                    EMPTY</span>
-                                                <h3 class="text-lg font-bold uppercase text-gray-800">Tidak ada data</h3>
-                                                <p class="text-xs text-gray-500 mt-1 mb-6">Database alamat saat ini kosong.
+            {{-- TABLE CARD --}}
+            <div class="bg-white rounded-2xl shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] border border-gray-100 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-50/50 border-b border-gray-100">
+                                <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-gray-400">Receiver / Label</th>
+                                <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-gray-400">Contact</th>
+                                <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-gray-400">Location Details</th>
+                                <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-gray-400 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-50">
+                            @forelse($addresses as $address)
+                                <tr class="group hover:bg-gray-50/80 transition-colors">
+                                    
+                                    {{-- NAME --}}
+                                    <td class="px-6 py-4 align-top">
+                                        <div class="flex items-start gap-3">
+                                            <div class="mt-1 w-2 h-2 rounded-full bg-indigo-500"></div>
+                                            <div>
+                                                <p class="font-bold text-gray-800 text-sm group-hover:text-indigo-600 transition-colors">
+                                                    {{ $address->name }}
                                                 </p>
+                                                <span class="inline-flex items-center px-2 py-0.5 mt-1 rounded text-[10px] font-medium bg-gray-100 text-gray-500 font-mono">
+                                                    ID: {{ $address->id }}
+                                                </span>
                                             </div>
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
+                                        </div>
+                                    </td>
+
+                                    {{-- CONTACT --}}
+                                    <td class="px-6 py-4 align-top">
+                                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                                            <span class="font-mono">{{ $address->phone }}</span>
+                                        </div>
+                                    </td>
+
+                                    {{-- LOCATION --}}
+                                    <td class="px-6 py-4 align-top">
+                                        <p class="text-sm text-gray-600 font-medium line-clamp-2 mb-2">
+                                            {{ $address->address }}
+                                        </p>
+                                        <div class="flex flex-wrap gap-2">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700">
+                                                {{ $address->city }}
+                                            </span>
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                                                {{ $address->province }}
+                                            </span>
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-500 font-mono">
+                                                {{ $address->postal_code }}
+                                            </span>
+                                        </div>
+                                    </td>
+
+                                    {{-- ACTIONS --}}
+                                    <td class="px-6 py-4 align-top text-right">
+                                        <div class="flex justify-end items-center gap-2">
+                                            {{-- Edit --}}
+                                            <a href="{{ route('admin.addresses.edit', $address->id) }}" 
+                                               class="p-2 rounded-lg text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 transition-all" title="Edit Address">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                                            </a>
+
+                                            {{-- Delete --}}
+                                            <form action="{{ route('admin.addresses.destroy', $address->id) }}" method="POST" class="inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button onclick="return confirm('WARNING: Are you sure you want to remove this address?')" 
+                                                        class="p-2 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-all" title="Delete">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="px-6 py-12 text-center text-gray-400">
+                                        <div class="flex flex-col items-center justify-center">
+                                            <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
+                                                <svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                            </div>
+                                            <p class="text-sm font-medium text-gray-500">No addresses found</p>
+                                            <p class="text-xs text-gray-400 mt-1">Start by adding a new shipping destination.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
 
-                {{-- Footer Info --}}
-                <div
-                    class="mt-4 flex justify-between items-center text-[10px] font-mono text-gray-400 uppercase border-t border-gray-200 pt-4">
-                    <span>System v1.0</span>
-                    <span>Rendered: {{ now()->format('H:i:s') }}</span>
+                {{-- FOOTER / PAGINATION --}}
+                <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 flex items-center justify-between">
+                    <p class="text-xs text-gray-500">
+                        Total Records: <span class="font-bold text-gray-800">{{ count($addresses) }}</span>
+                    </p>
+                    {{-- Pagination Placeholder if needed --}}
+                    {{-- {{ $addresses->links() }} --}}
                 </div>
             </div>
 

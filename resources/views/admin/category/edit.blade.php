@@ -1,65 +1,77 @@
 @extends('layouts.admin')
 
-@section('title', 'EDIT_CATEGORY_')
+@section('title', 'EDIT CATEGORY')
 
 @section('content')
-    <div class="max-w-md mx-auto mt-10">
-
-        {{-- HEADER --}}
-        <div class="mb-6 border-b-2 border-[#1a1a1a] pb-2">
-            <span class="font-mono text-xs text-gray-400 block mb-1">
-                TAXONOMY // UPDATE // ID: {{ substr(md5($category->id), 0, 6) }}
-            </span>
-            <h1 class="text-2xl font-black uppercase tracking-tighter text-[#1a1a1a]">
-                Edit Category
-            </h1>
+    <div class="min-h-screen bg-gray-50/50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+        
+        <div class="sm:mx-auto sm:w-full sm:max-w-md">
+            {{-- Header Icon & Title --}}
+            <div class="text-center">
+                <div class="mx-auto w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center mb-4 text-indigo-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-900 tracking-tight">Edit Collection</h2>
+                
+                <div class="mt-2 flex items-center justify-center gap-2">
+                    <span class="text-sm text-gray-500">Updating category details</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 font-mono">
+                        ID: {{ substr(md5($category->id), 0, 6) }}
+                    </span>
+                </div>
+            </div>
         </div>
 
-        {{-- FORM CONTAINER --}}
-        <div class="border-2 border-[#1a1a1a] bg-white p-8 relative shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            {{-- Decorative Corner --}}
-            <div class="absolute top-0 right-0 w-4 h-4 bg-[#1a1a1a]"></div>
+        <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+            {{-- FORM CARD --}}
+            <div class="bg-white py-8 px-4 shadow-[0_8px_30px_rgb(0,0,0,0.04)] sm:rounded-2xl sm:px-10 border border-gray-100 relative overflow-hidden">
+                
+                {{-- Decorative Blob --}}
+                <div class="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 rounded-full bg-indigo-50 blur-2xl opacity-50 pointer-events-none"></div>
 
-            <form method="POST" action="{{ route('admin.categories.update', $category) }}" class="space-y-8">
-                @csrf
-                @method('PUT')
+                <form method="POST" action="{{ route('admin.categories.update', $category) }}" class="space-y-6 relative">
+                    @csrf
+                    @method('PUT')
 
-                {{-- Input Field --}}
-                <div class="space-y-2">
-                    <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">
-                        Category Name
-                    </label>
-                    <input type="text" name="name" value="{{ old('name', $category->name) }}"
-                        placeholder="CATEGORY_NAME"
-                        class="w-full bg-[#F5F5F5] border-b-2 border-[#1a1a1a] p-3 font-mono text-sm focus:outline-none focus:bg-[#1a1a1a] focus:text-white focus:placeholder-gray-500 transition-colors placeholder-gray-400 uppercase"
-                        required>
-
-                    @error('name')
-                        <div class="flex items-center gap-2 mt-2 text-[#EB0000]">
-                            <span class="text-lg font-bold">!</span>
-                            <p class="text-[10px] font-bold uppercase tracking-wide">{{ $message }}</p>
+                    {{-- Input Field --}}
+                    <div>
+                        <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Category Name
+                        </label>
+                        <div class="relative rounded-md shadow-sm">
+                            <input type="text" 
+                                   name="name" 
+                                   id="name" 
+                                   value="{{ old('name', $category->name) }}"
+                                   class="block w-full px-4 py-3 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none transition-all placeholder-gray-400 sm:text-sm font-medium" 
+                                   placeholder="e.g. Limited Edition" 
+                                   required>
                         </div>
-                    @enderror
-                </div>
+                        
+                        @error('name')
+                            <p class="mt-2 text-xs text-red-500 flex items-center gap-1 font-medium">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
 
-                {{-- Action Buttons --}}
-                <div class="pt-4 flex flex-col gap-3">
-                    <button type="submit"
-                        class="w-full bg-[#1a1a1a] text-white py-3 text-xs font-black uppercase tracking-[0.2em] hover:bg-[#EB0000] transition-colors flex justify-center items-center gap-2 group">
-                        <span>Save Changes</span>
-                        <svg class="w-3 h-3 group-hover:translate-x-1 transition-transform" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2"
-                                d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                    </button>
+                    {{-- Buttons --}}
+                    <div class="pt-2 space-y-3">
+                        <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-[#111] hover:bg-black hover:shadow-lg hover:shadow-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-all transform hover:-translate-y-0.5">
+                            Update Changes
+                        </button>
 
-                    <a href="{{ route('admin.categories.index') }}"
-                        class="text-center text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-[#1a1a1a] decoration-2 underline underline-offset-4 transition-colors">
-                        Cancel & Return
-                    </a>
-                </div>
-            </form>
+                        <div class="text-center">
+                            <a href="{{ route('admin.categories.index') }}" class="text-xs font-medium text-gray-400 hover:text-gray-600 transition-colors">
+                                Cancel & Return
+                            </a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
         </div>
     </div>
 @endsection

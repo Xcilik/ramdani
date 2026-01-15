@@ -8,78 +8,32 @@
         {{-- ================= HERO SLIDER (UNIQLO STYLE) ================= --}}
         <div class="swiper heroSwiper mb-12 group relative">
             <div class="swiper-wrapper">
+
                 <div class="swiper-slide">
-                    <div class="relative aspect-[16/9] md:aspect-[21/9] bg-gray-200">
-                        <img src="{{ asset('assets/images/slider/slider1.jpg') }}"
-                            class="w-full h-full object-cover" alt="Koleksi Pria">
-                        <div class="absolute inset-0 bg-black/10 flex items-center p-8 md:p-16">
-                            <div class="bg-white p-6 md:p-10 max-w-xs md:max-w-md">
-                                <p class="text-[10px] font-bold tracking-[0.3em] uppercase mb-2 text-red-600">Terbaru</p>
-                                <h2 class="text-2xl md:text-4xl font-black uppercase tracking-tighter leading-none mb-4">
-                                    Koleksi Musim Panas 2024</h2>
-                                <p class="text-sm text-gray-600 mb-6 hidden md:block">Kenyamanan maksimal dengan teknologi
-                                    AirSense yang inovatif.</p>
-                                <a href="#"
-                                    class="inline-block bg-black text-white text-[11px] font-bold uppercase tracking-widest px-8 py-4 hover:bg-gray-800 transition">Lihat
-                                    Selengkapnya</a>
-                            </div>
-                        </div>
+                    <div class="relative aspect-[16/9] md:aspect-[20/8] bg-gray-200">
+                        <img src="{{ asset('assets/images/slider/slider-1.png') }}" class="w-full h-full object-cover"
+                            alt="Koleksi Pria">
                     </div>
                 </div>
+
                 <div class="swiper-slide">
-                    <div class="relative aspect-[16/9] md:aspect-[21/9] bg-gray-200">
-                        <img src="{{ asset('assets/images/slider/slider2.jpg') }}"
-                            class="w-full h-full object-cover" alt="Koleksi Wanita">
+                    <div class="relative aspect-[16/9] md:aspect-[20/8] bg-gray-200">
+                        <img src="{{ asset('assets/images/slider/slider-2.png') }}" class="w-full h-full object-cover"
+                            alt="Koleksi Wanita">
                         <div class="absolute inset-0 bg-black/10 flex items-center justify-end p-8 md:p-16">
-                            <div class="bg-white p-6 md:p-10 max-w-xs md:max-w-md text-right">
-                                <p class="text-[10px] font-bold tracking-[0.3em] uppercase mb-2 text-red-600">Promosi</p>
-                                <h2 class="text-2xl md:text-4xl font-black uppercase tracking-tighter leading-none mb-4">
-                                    E-Commerce Eksklusif</h2>
-                                <p class="text-sm text-gray-600 mb-6 hidden md:block">Dapatkan penawaran harga spesial hanya
-                                    untuk pembelian aplikasi.</p>
-                                <a href="#"
-                                    class="inline-block bg-black text-white text-[11px] font-bold uppercase tracking-widest px-8 py-4 hover:bg-gray-800 transition">Belanja
-                                    Sekarang</a>
-                            </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="swiper-slide">
-                    <div class="relative aspect-[16/9] md:aspect-[21/9] bg-gray-200">
-                        <img src="{{ asset('assets/images/slider/slider3.jpg') }}"
-                            class="w-full h-full object-cover" alt="Koleksi Pria">
+                    <div class="relative aspect-[16/9] md:aspect-[20/8] bg-gray-200">
+                        <img src="{{ asset('assets/images/slider/slider-3.png') }}" class="w-full h-full object-cover"
+                            alt="Koleksi Pria">
                         <div class="absolute inset-0 bg-black/10 flex items-center p-8 md:p-16">
-                            <div class="bg-white p-6 md:p-10 max-w-xs md:max-w-md">
-                                <p class="text-[10px] font-bold tracking-[0.3em] uppercase mb-2 text-red-600">Terbaru</p>
-                                <h2 class="text-2xl md:text-4xl font-black uppercase tracking-tighter leading-none mb-4">
-                                    Koleksi Musim Panas 2024</h2>
-                                <p class="text-sm text-gray-600 mb-6 hidden md:block">Kenyamanan maksimal dengan teknologi
-                                    AirSense yang inovatif.</p>
-                                <a href="#"
-                                    class="inline-block bg-black text-white text-[11px] font-bold uppercase tracking-widest px-8 py-4 hover:bg-gray-800 transition">Lihat
-                                    Selengkapnya</a>
-                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="swiper-slide">
-                    <div class="relative aspect-[16/9] md:aspect-[21/9] bg-gray-200">
-                        <img src="{{ asset('assets/images/slider/slider4.jpg') }}"
-                            class="w-full h-full object-cover" alt="Koleksi Wanita">
-                        <div class="absolute inset-0 bg-black/10 flex items-center justify-end p-8 md:p-16">
-                            <div class="bg-white p-6 md:p-10 max-w-xs md:max-w-md text-right">
-                                <p class="text-[10px] font-bold tracking-[0.3em] uppercase mb-2 text-red-600">Promosi</p>
-                                <h2 class="text-2xl md:text-4xl font-black uppercase tracking-tighter leading-none mb-4">
-                                    E-Commerce Eksklusif</h2>
-                                <p class="text-sm text-gray-600 mb-6 hidden md:block">Dapatkan penawaran harga spesial hanya
-                                    untuk pembelian aplikasi.</p>
-                                <a href="#"
-                                    class="inline-block bg-black text-white text-[11px] font-bold uppercase tracking-widest px-8 py-4 hover:bg-gray-800 transition">Belanja
-                                    Sekarang</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>                
+
             </div>
 
             <div
@@ -91,6 +45,7 @@
 
             <div class="swiper-pagination !-bottom-2"></div>
         </div>
+
 
 
         {{-- ================= TITLE & FILTER ================= --}}
