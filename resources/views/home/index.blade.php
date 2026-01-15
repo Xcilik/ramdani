@@ -89,11 +89,12 @@
                         
                             <!-- Harga -->
                             <div class="pt-2">
-                                <p class="text-lg md:text-xl font-extrabold text-gray-900 italic">
+                                <p class="text-lg md:text-xl font-extrabold text-gray-900">
                                     Rp {{ number_format($product->variants->min('price'), 0, ',', '.') }}
                                 </p>
                             </div>
                         </div>
+
 
                     </a>
                 </div>
