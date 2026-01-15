@@ -76,20 +76,25 @@
                                 </div>
                             @endif
                         </div>
-
                         <div class="space-y-1 px-1">
-                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em]">
+                            <!-- Kategori -->
+                            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                 {{ $product->category->name }}
                             </p>
-                            <h3 class="text-sm font-bold text-gray-900 line-clamp-2 leading-snug group-hover:underline decoration-1 underline-offset-4">
+                        
+                            <!-- Nama Produk -->
+                            <h3 class="text-sm md:text-base font-semibold text-gray-800 line-clamp-2 leading-relaxed group-hover:underline decoration-2 underline-offset-4">
                                 {{ $product->name }}
                             </h3>
+                        
+                            <!-- Harga -->
                             <div class="pt-2">
-                                <p class="text-lg font-black text-gray-900 italic">
+                                <p class="text-lg md:text-xl font-extrabold text-gray-900 italic">
                                     Rp {{ number_format($product->variants->min('price'), 0, ',', '.') }}
                                 </p>
                             </div>
                         </div>
+
                     </a>
                 </div>
             @endforeach
