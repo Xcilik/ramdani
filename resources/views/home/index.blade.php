@@ -10,7 +10,7 @@
         <div class="swiper-wrapper">
             @for ($i = 1; $i <= 3; $i++)
             <div class="swiper-slide">
-                <div class="relative w-full" style="padding-top:40%;"> {{-- height for slide, e.g. 20/8 ≈ 40% --}}
+                <div class="relative w-full" style="padding-top:40%;">
                     <img src="{{ asset('assets/images/slider/slider-'.$i.'.png') }}" 
                          class="absolute top-0 left-0 w-full h-full object-cover" 
                          alt="Slider {{ $i }}">
